@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.dontletbehind">
 
     <application
@@ -8,9 +9,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".TaskListActivity"
+            android:name=".activity.TaskListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,6 +21,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.TaskDetailActivity"
+            android:label="Task Detail"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activity.TaskListActivity" />
+
+        <provider
+            android:authorities="com.dontletbehind.contentprovider"
+            android:name=".provider.TaskProvider"
+            android:exported="false" />
+
+        <receiver android:name=".provider.TaskListWidgetProvider">
+            <intent-filter>
+                <action android:name=
+                    "android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_task_list_info"/>
+        </receiver>
+
+        <receiver android:name=".provider.NewTaskWidgetProvider">
+            <intent-filter>
+                <action android:name=
+                    "android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_new_task_info"/>
+        </receiver>
+
     </application>
 
 </manifest>
