@@ -1,4 +1,4 @@
-package com.dontletbehind.provider;
+package com.dontletbehind.provider.database;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;
@@ -20,7 +20,7 @@ import java.util.Objects;
  * Provides {@code {@link com.dontletbehind.domain.entity.TaskEntity}} content stored
  * in local database.
  */
-public class TaskProvider extends ContentProvider {
+public class TaskEntityProvider extends ContentProvider {
 
     private static final int TASK_ID = 10;
     private static final int ALL_TASKS = 20;
@@ -122,7 +122,7 @@ public class TaskProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
-        return Uri.parse(CONTENT_TYPE + "/" + id);
+        return Uri.parse(CONTENT_URI + "/" + id);
     }
 
     /**
@@ -169,7 +169,7 @@ public class TaskProvider extends ContentProvider {
                 for (TaskEntity task : mTaskDao.findAllEntity()) {
                     task.setTitle(values.getAsString(TaskContract.COLUMN_TITLE));
                     task.setDescription(values.getAsString(TaskContract.COLUMN_DESCRIPTION));
-                    task.setTimer(values.getAsInteger(TaskContract.COLUMN_TIMER));
+                    task.setTimer(values.getAsLong(TaskContract.COLUMN_TIMER));
 
                     mTaskDao.update(task);
                     affectedRows++;

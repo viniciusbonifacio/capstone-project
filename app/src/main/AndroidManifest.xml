@@ -29,10 +29,10 @@
 
         <provider
             android:authorities="com.dontletbehind.contentprovider"
-            android:name=".provider.TaskProvider"
+            android:name=".provider.database.TaskEntityProvider"
             android:exported="false" />
 
-        <receiver android:name=".provider.TaskListWidgetProvider">
+        <receiver android:name=".provider.widget.TaskListWidgetProvider">
             <intent-filter>
                 <action android:name=
                     "android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -42,7 +42,7 @@
                 android:resource="@xml/widget_task_list_info"/>
         </receiver>
 
-        <receiver android:name=".provider.NewTaskWidgetProvider">
+        <receiver android:name=".provider.widget.NewTaskWidgetProvider">
             <intent-filter>
                 <action android:name=
                     "android.appwidget.action.APPWIDGET_UPDATE"/>
@@ -51,6 +51,10 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_new_task_info"/>
         </receiver>
+
+        <receiver android:name=".receiver.TaskReminderReceiver"
+            android:enabled="true"
+            android:exported="false" />
 
     </application>
 

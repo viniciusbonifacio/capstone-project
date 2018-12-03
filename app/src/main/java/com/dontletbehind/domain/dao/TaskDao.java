@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.dontletbehind.domain.contract.TaskContract;
 import com.dontletbehind.domain.database.DatabaseConnectionHandler;
 import com.dontletbehind.domain.entity.TaskEntity;
+import com.dontletbehind.util.ParserUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +38,10 @@ public class TaskDao {
      */
     public TaskEntity insert(TaskEntity task) {
         //entity parse
-        ContentValues values = new ContentValues();
-        values.put(TaskContract.COLUMN_TITLE, task.getTitle());
-        values.put(TaskContract.COLUMN_DESCRIPTION, task.getDescription());
-        values.put(TaskContract.COLUMN_TIMER, task.getTimer());
+        ContentValues values = ParserUtil.parseTasktoContentValues(task);
         return insert(values);
     }
+
 
     /**
      * Insert a {@code {@link TaskEntity}} record on database.
@@ -70,7 +69,7 @@ public class TaskDao {
 
         //retrieve the record
         cursor.moveToFirst();
-        task = parseTaskCursor(cursor);
+        task = ParserUtil.parseCursorToTaskEntity(cursor);
         cursor.close();
 
         //close connection
@@ -155,7 +154,7 @@ public class TaskDao {
         //open connection
         mDatabase = DatabaseConnectionHandler.getInstance(mContext).openConnection();
 
-        Cursor cursor = mDatabase.query(
+        return mDatabase.query(
                 TaskContract.TABLE_NAME,
                 TaskContract.ALL_COLUMNS,
                 null,
@@ -164,8 +163,6 @@ public class TaskDao {
                 null,
                 null
         );
-
-        return cursor;
     }
 
     /**
@@ -180,7 +177,7 @@ public class TaskDao {
         Cursor cursor = findAllCursor();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            result.add(parseTaskCursor(cursor));
+            result.add(ParserUtil.parseCursorToTaskEntity(cursor));
             cursor.moveToNext();
         }
         cursor.close();
@@ -206,7 +203,7 @@ public class TaskDao {
 
         //parse result
         cursor.moveToFirst();
-        TaskEntity task = parseTaskCursor(cursor);
+        TaskEntity task = ParserUtil.parseCursorToTaskEntity(cursor);
         cursor.close();
 
         //close connection
@@ -232,33 +229,5 @@ public class TaskDao {
                 null
         );
     }
-
-    /**
-     * Parse a {@code {@link Cursor} to an instance of {@code {@link TaskEntity}}.
-     *
-     * @param cursor with retrieved value
-     * @return {@code TaskEntity} filled with cursor values
-     */
-    private TaskEntity parseTaskCursor(Cursor cursor) {
-        //extract values
-        int id = cursor.getInt(
-                cursor.getColumnIndex(TaskContract.COLUMN_ID));
-        String title = cursor.getString(
-                cursor.getColumnIndex(TaskContract.COLUMN_TITLE));
-        String description = cursor.getString(
-                cursor.getColumnIndex(TaskContract.COLUMN_DESCRIPTION));
-        long timer = cursor.getInt(
-                cursor.getColumnIndex(TaskContract.COLUMN_TIMER));
-
-        //set entity
-        TaskEntity taskEntity = new TaskEntity();
-        taskEntity.setId(id);
-        taskEntity.setTitle(title);
-        taskEntity.setDescription(description);
-        taskEntity.setTimer(timer);
-
-        return taskEntity;
-    }
-
 
 }

@@ -2,6 +2,7 @@ package com.dontletbehind.adapter;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -13,9 +14,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dontletbehind.R;
+import com.dontletbehind.activity.TaskDetailActivity;
 import com.dontletbehind.domain.contract.TaskContract;
 import com.dontletbehind.domain.entity.TaskEntity;
-import com.dontletbehind.provider.TaskProvider;
+import com.dontletbehind.notification.TaskReminderAlarm;
+import com.dontletbehind.notification.TaskReminderNotification;
+import com.dontletbehind.provider.database.TaskEntityProvider;
+import com.dontletbehind.util.ParserUtil;
 
 import java.util.List;
 
@@ -29,10 +34,10 @@ public class TaskListAdapter extends android.support.v7.widget.RecyclerView.Adap
     /**
      * <code>ViewHolder</code> for {@link TaskListAdapter}
      */
-    public static class TaskListAdapterViewHolder extends RecyclerView.ViewHolder {
+    static class TaskListAdapterViewHolder extends RecyclerView.ViewHolder {
 
-        public final View mItemView;
-        public final View mItemRemoveView;
+        final View mItemView;
+        final View mItemRemoveView;
         private final TextView mTaskItemTextView;
 
         /**
@@ -40,7 +45,7 @@ public class TaskListAdapter extends android.support.v7.widget.RecyclerView.Adap
          *
          * @param taskItemView the Task's item view.
          */
-        public TaskListAdapterViewHolder(View taskItemView) {
+        TaskListAdapterViewHolder(View taskItemView) {
             super(taskItemView);
             this.mTaskItemTextView = taskItemView.findViewById(R.id.tv_item_title_task_list);
             this.mItemView = taskItemView.findViewById(R.id.cv_item_view);
@@ -68,10 +73,17 @@ public class TaskListAdapter extends android.support.v7.widget.RecyclerView.Adap
      */
     @NonNull
     @Override
-    public TaskListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public TaskListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
         View cv = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.item_task_list, viewGroup, false);
-
+        cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent detailIntent = new Intent(mContext, TaskDetailActivity.class);
+                detailIntent.putExtra(TaskEntity.class.getName(), ParserUtil.taskToParcelBytes(mTaskDataSet.get(i)));
+                mContext.startActivity(detailIntent);
+            }
+        });
         return new TaskListAdapterViewHolder(cv);
     }
 
@@ -108,9 +120,7 @@ public class TaskListAdapter extends android.support.v7.widget.RecyclerView.Adap
      */
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, final int position) {
-
         if (viewHolder instanceof TaskListAdapterViewHolder) {
-
             final TaskEntity task = mTaskDataSet.get(viewHolder.getAdapterPosition());
             //remove the task from database and dataset
             removeTask(task);
@@ -148,7 +158,7 @@ public class TaskListAdapter extends android.support.v7.widget.RecyclerView.Adap
      */
     private void removeTask(TaskEntity taskEntity) {
         int affectedRows = mContext.getContentResolver().delete(
-                TaskProvider.CONTENT_URI,
+                Uri.parse(TaskEntityProvider.CONTENT_URI.toString() + "/" + taskEntity.getId()),
                 TaskContract.COLUMN_ID + "=" + taskEntity.getId(),
                 null);
 
@@ -156,6 +166,11 @@ public class TaskListAdapter extends android.support.v7.widget.RecyclerView.Adap
             int position = mTaskDataSet.indexOf(taskEntity);
             mTaskDataSet.remove(position);
             notifyItemRemoved(position);
+
+            //cancel an existing alarm if any
+            new TaskReminderAlarm(mContext).cancelAlarm(taskEntity);
+            //cancel an existing notification if any
+            new TaskReminderNotification(mContext).cancelNotification(taskEntity);
         }
     }
 
@@ -174,7 +189,7 @@ public class TaskListAdapter extends android.support.v7.widget.RecyclerView.Adap
         values.put(TaskContract.COLUMN_TIMER, taskEntity.getTimer());
 
         Uri insert = mContext.getContentResolver().insert(
-                TaskProvider.CONTENT_URI,
+                TaskEntityProvider.CONTENT_URI,
                 values
         );
 

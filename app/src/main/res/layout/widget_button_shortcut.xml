@@ -7,6 +7,7 @@
         android:id="@+id/btn_widget_shortcut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Task"/>
+        android:text="New Task"
+        android:drawableBottom="@android:drawable/ic_menu_recent_history"/>
 
 </LinearLayout>

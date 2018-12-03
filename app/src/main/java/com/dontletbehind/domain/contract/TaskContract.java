@@ -41,7 +41,7 @@ public class TaskContract {
     /**
      * Create table DDL.
      */
-    public static final String CREATE_TABLE_TASK =
+    private static final String CREATE_TABLE_TASK =
             "create table " +
                     TABLE_NAME +
                     "(" +
@@ -54,7 +54,7 @@ public class TaskContract {
     /**
      * Drop table DDL.
      */
-    public static final String DROP_TABLE_TASK =
+    private static final String DROP_TABLE_TASK =
             "drop table if exists " + TABLE_NAME + ";";
 
     /**
@@ -64,7 +64,7 @@ public class TaskContract {
      */
     public static void onCreate(SQLiteDatabase database) {
         database.execSQL(CREATE_TABLE_TASK);
-        database.execSQL("INSERT INTO task values(null, 'First task', 'First task to test insert manually', '12316864');");
+//        database.execSQL("INSERT INTO task values(null, 'First task', 'First task to test insert manually', '12316864');");
     }
 
     /**

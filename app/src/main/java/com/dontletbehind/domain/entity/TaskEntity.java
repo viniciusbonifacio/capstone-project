@@ -1,23 +1,24 @@
 package com.dontletbehind.domain.entity;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Representation of a Task to be done.
  */
-public class TaskEntity implements Serializable {
+public class TaskEntity implements Parcelable {
 
-    private int id;
+    private Integer id;
     private String title;
     private String description;
-    private long timer;
+    private Long timer;
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -37,11 +38,46 @@ public class TaskEntity implements Serializable {
         this.description = description;
     }
 
-    public long getTimer() {
+    public Long getTimer() {
         return timer;
     }
 
-    public void setTimer(long timer) {
+    public void setTimer(Long timer) {
         this.timer = timer;
     }
+
+    public TaskEntity(){}
+
+    public TaskEntity(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        description = in.readString();
+        timer = in.readLong();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeLong(timer);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<TaskEntity> CREATOR = new Parcelable.Creator<TaskEntity>() {
+        @Override
+        public TaskEntity createFromParcel(Parcel in) {
+            return new TaskEntity(in);
+        }
+
+        @Override
+        public TaskEntity[] newArray(int size) {
+            return new TaskEntity[size];
+        }
+    };
 }

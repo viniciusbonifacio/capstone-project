@@ -1,4 +1,4 @@
-package com.dontletbehind.provider;
+package com.dontletbehind.provider.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;

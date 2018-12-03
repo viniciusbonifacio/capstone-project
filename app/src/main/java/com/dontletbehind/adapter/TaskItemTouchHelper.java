@@ -17,8 +17,8 @@ public class TaskItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     /**
      * Constructor.
      *
-     * @param dragDirs
-     * @param swipeDirs
+     * @param dragDirs int representation
+     * @param swipeDirs int representation
      * @param itemTouchListener {@code ItemTouchHelperListener} instance
      */
     public TaskItemTouchHelper(int dragDirs, int swipeDirs, ItemTouchHelperListener itemTouchListener) {

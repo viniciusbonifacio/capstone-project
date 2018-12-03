@@ -4,32 +4,51 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_task_detail_reminder_30m"
-        android:layout_width="wrap_content"
+    <RadioGroup
+        android:id="@+id/rg_reminder_task_detail"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="30m"
-        style="?android:attr/buttonBarButtonStyle"/>
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_task_detail_reminder_1h"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1h"
-        style="?android:attr/buttonBarButtonStyle"/>
+        <RadioButton
+            android:id="@+id/btn_task_detail_reminder_30m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/reminder_task_detail"
+            android:button="@null"
+            android:padding="16dp"
+            android:layout_margin="16dp"
+            android:text="30m" />
 
-    <Button
-        android:id="@+id/btn_task_detail_reminder_1d"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1d"
-        style="?android:attr/buttonBarButtonStyle"/>
+        <RadioButton
+            android:id="@+id/btn_task_detail_reminder_1h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/reminder_task_detail"
+            android:button="@null"
+            android:padding="16dp"
+            android:layout_margin="16dp"
+            android:text="1h" />
 
-    <Button
-        android:id="@+id/btn_task_detail_reminder_1w"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1w"
-        style="?android:attr/buttonBarButtonStyle"/>
+        <RadioButton
+            android:id="@+id/btn_task_detail_reminder_1d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/reminder_task_detail"
+            android:button="@null"
+            android:padding="16dp"
+            android:layout_margin="16dp"
+            android:text="1d" />
+
+        <RadioButton
+            android:id="@+id/btn_task_detail_reminder_1w"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/reminder_task_detail"
+            android:button="@null"
+            android:padding="16dp"
+            android:layout_margin="16dp"
+            android:text="1w" />
+    </RadioGroup>
 
 </LinearLayout>

@@ -15,12 +15,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Database version identifier.
      */
-    public static final Integer DATABASE_VERSION = 1;
+    private static final Integer DATABASE_VERSION = 1;
 
     /**
      * Datbase name.
      */
-    public static final String DATABASE_NAME = "dontletbehind.db";
+    private static final String DATABASE_NAME = "dontletbehind.db";
 
 
     /**
@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @param context to transact.
      */
-    public DatabaseHelper(Context context) {
+    private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
