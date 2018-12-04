@@ -28,7 +28,7 @@ public class ParserUtil {
      * @param cursor with retrieved value
      * @return {@code TaskEntity} filled with cursor values
      */
-    public static TaskEntity parseCursorToTaskEntity(Cursor cursor) {
+    public static TaskEntity cursorToTaskEntity(Cursor cursor) {
         //extract values
         int id = cursor.getInt(
                 cursor.getColumnIndex(TaskContract.COLUMN_ID));
@@ -55,7 +55,7 @@ public class ParserUtil {
      * @param task to be parsed
      * @return an instance of content values.
      */
-    public static ContentValues parseTasktoContentValues(@NonNull TaskEntity task) {
+    public static ContentValues taskToContentValues(@NonNull TaskEntity task) {
         ContentValues values = new ContentValues();
         values.put(TaskContract.COLUMN_ID, task.getId());
         values.put(TaskContract.COLUMN_TITLE, task.getTitle());
@@ -71,7 +71,7 @@ public class ParserUtil {
      * @param taskBytes representation of a {@code TaskEntity}.
      * @return a {@code TaskEntity} instance.
      */
-    public static TaskEntity parcelBytesToTask(byte[] taskBytes) {
+    public static TaskEntity bytesToTask(byte[] taskBytes) {
         Parcel parcel = Parcel.obtain();
         parcel.unmarshall(taskBytes, 0, taskBytes.length);
         parcel.setDataPosition(0);
@@ -107,7 +107,7 @@ public class ParserUtil {
         List<TaskEntity> result = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            result.add(ParserUtil.parseCursorToTaskEntity(cursor));
+            result.add(ParserUtil.cursorToTaskEntity(cursor));
             cursor.moveToNext();
         }
         cursor.close();
@@ -115,4 +115,13 @@ public class ParserUtil {
         return result;
     }
 
+    /**
+     * Parse the {@code Cursor} to an {@code byte} array.
+     *
+     * @param cursor pointing to result set.
+     * @return a {@code byte} array of a {@code Parcel}.
+     */
+    public static byte[] cursorToParcelBytes(Cursor cursor) {
+        return taskToParcelBytes(cursorToTaskEntity(cursor));
+    }
 }

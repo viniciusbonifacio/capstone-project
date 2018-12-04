@@ -24,7 +24,7 @@ public class TaskReminderReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         TaskEntity result =
-                ParserUtil.parcelBytesToTask(intent.getByteArrayExtra(TaskEntity.class.getName()));
+                ParserUtil.bytesToTask(intent.getByteArrayExtra(TaskEntity.class.getName()));
 
         if (result != null) {
             checkIntentAction(context, result, intent);

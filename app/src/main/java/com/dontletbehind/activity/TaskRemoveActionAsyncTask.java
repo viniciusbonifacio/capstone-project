@@ -13,6 +13,7 @@ import com.dontletbehind.domain.entity.TaskEntity;
 import com.dontletbehind.notification.TaskReminderAlarm;
 import com.dontletbehind.notification.TaskReminderNotification;
 import com.dontletbehind.provider.database.TaskEntityProvider;
+import com.dontletbehind.provider.widget.TaskListWidgetProvider;
 import com.dontletbehind.util.ParserUtil;
 
 import java.lang.ref.WeakReference;
@@ -49,7 +50,7 @@ public class TaskRemoveActionAsyncTask extends AsyncTask<Integer, Void, Integer>
                     );
 
             if (cursor != null) {
-                TaskEntity taskEntity = ParserUtil.parseCursorToTaskEntity(cursor);
+                TaskEntity taskEntity = ParserUtil.cursorToTaskEntity(cursor);
                 Integer affectedRow = mContext.get().getContentResolver()
                         .delete(
                             Uri.parse(TaskEntityProvider.CONTENT_URI.toString() + "/" + taskEntity),
@@ -62,6 +63,8 @@ public class TaskRemoveActionAsyncTask extends AsyncTask<Integer, Void, Integer>
                 new TaskReminderNotification(mContext.get()).cancelNotification(taskEntity);
                 //notify adapter
                 new TaskListAdapter(mContext.get()).notifyDataSetChanged();
+                //notify task list widget
+                TaskListWidgetProvider.updateTaskListWidget(mContext.get());
 
                 return affectedRow;
             }

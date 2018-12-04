@@ -18,6 +18,7 @@ import com.dontletbehind.domain.contract.TaskContract;
 import com.dontletbehind.domain.entity.TaskEntity;
 import com.dontletbehind.notification.TaskReminderAlarm;
 import com.dontletbehind.provider.database.TaskEntityProvider;
+import com.dontletbehind.provider.widget.TaskListWidgetProvider;
 import com.dontletbehind.util.ParserUtil;
 
 import java.util.concurrent.TimeUnit;
@@ -127,6 +128,7 @@ public class TaskDetailActivity extends AppCompatActivity {
             saveTaskEntity();
         }
 
+        updateTaskListWidget();
         onBackPressed();
     }
 
@@ -134,7 +136,7 @@ public class TaskDetailActivity extends AppCompatActivity {
      * Updates the current {@link TaskEntity}.
      */
     private void updateTaskEntity() {
-        ContentValues values = ParserUtil.parseTasktoContentValues(mTaskEntity);
+        ContentValues values = ParserUtil.taskToContentValues(mTaskEntity);
         int affectedRows = getContentResolver().update(
                 Uri.parse(TaskEntityProvider.CONTENT_URI.toString() + "/" + mTaskEntity.getId()),
                 values,
@@ -154,7 +156,7 @@ public class TaskDetailActivity extends AppCompatActivity {
      * Save a new {@link TaskEntity}.
      */
     private void saveTaskEntity() {
-        ContentValues values = ParserUtil.parseTasktoContentValues(mTaskEntity);
+        ContentValues values = ParserUtil.taskToContentValues(mTaskEntity);
         Uri insertUri = getContentResolver().insert(TaskEntityProvider.CONTENT_URI, values);
         if (insertUri != null) {
             Cursor cursor = getContentResolver()
@@ -203,7 +205,7 @@ public class TaskDetailActivity extends AppCompatActivity {
      */
     private void checkEditMode() {
         if (getIntent().getByteArrayExtra(TaskEntity.class.getName()) != null) {
-            mTaskEntity = ParserUtil.parcelBytesToTask(
+            mTaskEntity = ParserUtil.bytesToTask(
                     getIntent().getByteArrayExtra(TaskEntity.class.getName()));
 
             mTitleEditText.setText(mTaskEntity.getTitle());
@@ -226,5 +228,12 @@ public class TaskDetailActivity extends AppCompatActivity {
             //sets the behavior to update current task
             mEditMode = true;
         }
+    }
+
+    /**
+     * Updates all the {@link TaskListWidgetProvider} instances for data set changes.
+     */
+    private void updateTaskListWidget() {
+        TaskListWidgetProvider.updateTaskListWidget(this);
     }
 }

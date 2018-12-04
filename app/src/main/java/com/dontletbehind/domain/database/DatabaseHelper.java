@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @param context to transact.
      */
-    private DatabaseHelper(Context context) {
+    DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

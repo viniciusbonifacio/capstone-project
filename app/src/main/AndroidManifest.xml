@@ -41,7 +41,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_task_list_info"/>
         </receiver>
-
         <receiver android:name=".provider.widget.NewTaskWidgetProvider">
             <intent-filter>
                 <action android:name=
@@ -51,10 +50,12 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_new_task_info"/>
         </receiver>
-
         <receiver android:name=".receiver.TaskReminderReceiver"
             android:enabled="true"
             android:exported="false" />
+
+        <service android:name=".service.TaskListWidgetRemoteViewService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
     </application>
 

@@ -38,7 +38,7 @@ public class TaskDao {
      */
     public TaskEntity insert(TaskEntity task) {
         //entity parse
-        ContentValues values = ParserUtil.parseTasktoContentValues(task);
+        ContentValues values = ParserUtil.taskToContentValues(task);
         return insert(values);
     }
 
@@ -69,7 +69,7 @@ public class TaskDao {
 
         //retrieve the record
         cursor.moveToFirst();
-        task = ParserUtil.parseCursorToTaskEntity(cursor);
+        task = ParserUtil.cursorToTaskEntity(cursor);
         cursor.close();
 
         //close connection
@@ -177,7 +177,7 @@ public class TaskDao {
         Cursor cursor = findAllCursor();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            result.add(ParserUtil.parseCursorToTaskEntity(cursor));
+            result.add(ParserUtil.cursorToTaskEntity(cursor));
             cursor.moveToNext();
         }
         cursor.close();
@@ -203,7 +203,7 @@ public class TaskDao {
 
         //parse result
         cursor.moveToFirst();
-        TaskEntity task = ParserUtil.parseCursorToTaskEntity(cursor);
+        TaskEntity task = ParserUtil.cursorToTaskEntity(cursor);
         cursor.close();
 
         //close connection

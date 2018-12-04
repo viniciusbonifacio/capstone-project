@@ -8,6 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="New Task"
-        android:drawableBottom="@android:drawable/ic_menu_recent_history"/>
+        android:drawableEnd="@android:drawable/ic_menu_recent_history"/>
 
 </LinearLayout>
